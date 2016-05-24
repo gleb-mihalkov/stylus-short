@@ -1,0 +1,13 @@
+// Переопределение свойства overflow.
+// overflow: ... | ellipsis
+overflow($value)
+  
+  if $value is ellipsis
+    
+    text-overflow: ellipsis
+    white-space: nowrap
+    overflow: hidden
+  
+  else
+    
+    overflow: $value
