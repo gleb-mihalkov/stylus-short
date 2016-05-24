@@ -1,0 +1,46 @@
+// Переопределяет свойство border.
+// border: <border-width = 1px> <border-color = black> <border-style = solid> <border-radius>
+border($values...)
+  $values = generate-borders($values)
+  $border = $values["border"]
+  $radius = $values["radius"]
+  
+  border-radius: $radius if isset($radius)
+  border: $border if isset($border)
+
+// Переопределяет свойство border-top.
+border-top($values...)
+  $values = generate-borders($values)
+  $border = $values["border"]
+  $radius = $values["radius"]
+  
+  border-radius: $radius $radius 0 0 if isset($radius)
+  border-top: $border if isset($border)
+  
+// Переопределяет свойство border-left.
+border-right($values...)
+  $values = generate-borders($values)
+  $border = $values["border"]
+  $radius = $values["radius"]
+  
+  border-radius: 0 $radius $radius 0 if isset($radius)
+  border-right: $border if isset($border)
+  
+// Переопределяет свойство border-bottom.
+border-bottom($values...)
+  $values = generate-borders($values)
+  $border = $values["border"]
+  $radius = $values["radius"]
+  
+  border-radius: 0 0 $radius $radius if isset($radius)
+  border-bottom: $border if isset($border)
+
+// Переопределяет свойство border-left.
+border-left($values...)
+  $values = generate-borders($values)
+  $border = $values["border"]
+  $radius = $values["radius"]
+  
+  border-radius: $radius 0 0 $radius if isset($radius)
+  border-left: $border if isset($border)
+    

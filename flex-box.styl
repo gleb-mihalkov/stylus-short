@@ -1,0 +1,28 @@
+// Добавляет свойство flex-box.
+// flex-box: <flex-direction> <flex-wrap> <justify-content> <align-items> <align-content>
+flex-box($values...)
+  
+  $values = create-groups($values, {
+    "flex": is-display-flex
+    "flex-direction": is-flex-direction
+    "flex-wrap": is-flex-wrap
+    "justify-content": is-justify-content
+    "align-items": is-align-items
+    "align-content": is-align-content
+  })
+  
+  $flex = $values["flex"][0]
+  $flex-direction = $values["flex-direction"][0]
+  $flex-wrap = $values["flex-wrap"][0]
+  $justify-content = $values["justify-content"][0]
+  $align-items = $values["align-items"][0]
+  $align-content = $values["align-content"][0]
+  
+  $flex = flex if $flex is null
+  
+  display: $flex if isset($flex)
+  flex-direction: $flex-direction if isset($flex-direction)
+  flex-wrap: $flex-wrap if isset($flex-wrap)
+  justify-content: $justify-content if isset($justify-content)
+  align-items: $align-items if isset($align-items)
+  align-content: $align-content if isset($align-content)

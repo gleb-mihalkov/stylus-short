@@ -1,0 +1,6 @@
+// Переопределяет свойство padding.
+padding($top, $right = $top, $bottom = $top, $left = $right)
+  padding-bottom: $bottom if isset($bottom)
+  padding-right: $right if isset($right)
+  padding-left: $left if isset($left)
+  padding-top: $top if isset($top)

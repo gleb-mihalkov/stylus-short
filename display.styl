@@ -1,0 +1,28 @@
+// Переопределяет свойство display.
+// display: <display> <width> <height = width> <content>
+display($values...)
+  
+  $values = create-groups($values, {
+    "display": is-display
+    "content": is-string
+    "width": is-unit
+    "height": is-unit
+    "addon": is-display-addon
+  })
+  
+  $display = $values["display"][0]
+  $content = $values["content"][0]
+  $width = $values["width"][0]
+  $height = $values["height"][0]
+  $addon = $values["addon"][0]
+  
+  $height = $width if $height is null
+  
+  display: $display if isset($display)
+  content: $content if isset($content)
+  height: $height if isset($height)
+  width: $width if isset($width)
+  
+  if isset($addon)
+    margin-right: auto
+    margin-left: auto

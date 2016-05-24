@@ -1,0 +1,11 @@
+// Переопределяет свойство font-weight.
+// font-weight: <... thin extralight light medium semibold extrabold heavy>
+font-weight($value)
+  $value = 100 if $value is thin
+  $value = 200 if $value is extralight
+  $value = 300 if $value is light
+  $value = 500 if $value is medium
+  $value = 600 if $value is semibold
+  $value = 800 if $value is extrabold
+  $value = 900 if $value is heavy
+  font-weight: $value if isset($value)

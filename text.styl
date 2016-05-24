@@ -1,0 +1,36 @@
+// Добавляет свойство text.
+// text: <color> <text-align> <font-weight> <font-style> <text-decoration>
+//       <text-transform> <text-overflow> <font-size> <line-height>
+text($values...)
+  
+  $values = create-groups($values, {
+    "color": is-color
+    "text-align": is-text-align
+    "font-weight": is-font-weight
+    "font-style": is-font-style
+    "text-decoration": is-text-decoration
+    "text-transform": is-text-transform
+    "text-overflow": is-text-overflow
+    "font-size": is-unit
+    "line-height": is-unit
+  })
+  
+  $color = $values["color"][0]
+  $text-align = $values["text-align"][0]
+  $font-weight = $values["font-weight"][0]
+  $font-style = $values["font-style"][0]
+  $text-decoration = $values["text-decoration"][0]
+  $text-transform = $values["text-transform"][0]
+  $text-overflow = $values["text-overflow"][0]
+  $font-size = $values["font-size"][0]
+  $line-height = $values["line-height"][0]
+  
+  color: $color if isset($color)
+  text-align: $text-align if isset($text-align)
+  font-weight: $font-weight if isset($font-weight)
+  font-style: $font-style if isset($font-style)
+  text-decoration: $text-decoration if isset($text-decoration)
+  text-transform: $text-transform if isset($text-transform)
+  text-overflow: $text-overflow if isset($text-overflow)
+  font-size: $font-size if isset($font-size)
+  line-height: $line-height if isset($line-height)

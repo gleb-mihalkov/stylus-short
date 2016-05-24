@@ -1,0 +1,5 @@
+// Переопределяет свойство color.
+// color: <color> <background-color>
+color($color, $background-color = false)
+  background-color: $background-color if isset($background-color)
+  color: $color if isset($color)

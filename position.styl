@@ -1,0 +1,56 @@
+// Переопределяет свойтство position.
+// position: <position> <clockwise top right bottom left>
+position($values...)
+
+  $values = create-groups($values, {
+    "position": is-position
+    "top": is-unit
+    "right": is-unit
+    "bottom": is-unit
+    "left": is-unit
+    "addon": is-position-addon
+  })
+  
+  $position = $values["position"][0]
+  $top = $values["top"][0]
+  $right = $values["right"][0]
+  $bottom = $values["bottom"][0]
+  $left = $values["left"][0]
+  $addon = $values["addon"]
+  
+  if length($addon) is 0
+    
+    $right = $top if $right is null
+    $bottom = $top if $bottom is null
+    $left = $right if $left is null
+    
+    position: $position if $position
+    bottom: $bottom if $bottom
+    right: $right if $right
+    left: $left if $left
+    top: $top if $top
+    
+  else
+    
+    $position = absolute if $position is null
+    
+    if center in $addon and isset(@width)
+      $noLeft = true
+      margin-left: -(@width / 2)
+      left: 50%
+      
+    if middle in $addon and isset(@height)
+      $noTop = true
+      margin-top: -(@height / 2)
+      top: 50%
+    
+    position: $position if isset($position)
+    bottom: 0px if bottom in $addon
+    right: 0px if right in $addon
+    left: 0px if left in $addon and !$noLeft
+    top: 0px if top in $addon and !$noTop
+      
+    
+    
+      
+  

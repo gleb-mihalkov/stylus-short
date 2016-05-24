@@ -1,0 +1,218 @@
+// Показывает, является ли значение false или null.
+isset($value)
+  return !($value is a "null" or ($value is a "boolean" and $value is false))
+
+// Определяет, является ли значение цветом.
+is-color($value)
+  return $value is a "rgba" or $value is a "hsla"
+
+// Определяет, является ли значение размером.
+is-unit($value)
+  return $value is a "unit"
+  
+// Определяет, является ли значение строкой.
+is-string($value)
+  return $value is a "string"
+
+// Определяет, является ли значение вызовом css-функции.
+is-call($value)
+  return $value is a "call"
+
+// Определяет, является ли значение свойством position.
+is-position($value)
+  return $value in (fixed absolute relative static)
+
+// Определяет, является ли значение свойством display.
+is-display($value)
+  return $value in (block inline inline-block inline-table list-item none run-in table table-caption table-cell table-column-group table-column table-footer-group table-header-group table-row table-row-group)
+
+// Определяет, является ли значение свойством font-weight.
+is-text-align($value)
+  return $value in (center justify left right start end)
+
+// Определяет, является ли значение свойством font-weight.
+is-font-weight($value)
+  return $value in (bold bolder lighter thin extralight light normal medium semibold extrabold heavy 100 200 300 400 500 600 700 800 900)
+
+// Определяет, является ли значение свойством font-style.
+is-font-style($value)
+  return $value in (normal italic oblique inherit)
+
+// Определяет, является ли значение свойством text-decoration.
+is-text-decoration($value)
+  return $value in (blink line-through overline underline none inherit)
+
+// Определяет, является ли значение свойством text-transform.
+is-text-transform($value)
+  return $value in (capitalize lowercase uppercase none inherit)
+
+// Определяет, является ли значение свойством text-overflow.
+is-text-overflow($value)
+  return $value in (clip ellipsis)
+
+// Определяет, является ли значение свойством background-repeat.
+is-background-repeat($value)
+  return $value in (no-repeat repeat repeat-x repeat-y inherit)
+  
+// Определяет, является ли значение свойством background-clip.
+is-background-attachment($value)
+  return $value in (fixed scroll local)
+
+// Определяет, является ли значение свойством background-clip.
+is-background-clip($value)
+  return $value in (padding-box border-box content-box)
+
+// Определяет, является ли значение свойством background-origin.
+is-background-origin($value)
+  return $value in (padding-box border-box content-box)
+  
+// Определяет, является ли значение свойством background-position-x.
+is-background-position-x($value)
+  return $value is a "unit" or $value in (left center right)
+
+// Определяет, является ли значение свойством background-position-y.
+is-background-position-y($value)
+  return $value is a "unit" or $value in (top center bottom)
+  
+// Определяет, является ли значение свойством background-size.
+is-background-size($value)
+  return $value is a "unit" or $value in (cover contain)
+
+// Определяет, является ли значение свойством border-style.
+is-border-style($value)
+  return $value in (none hidden dotted dashed solid double groove ridge inset outset inherit)
+
+// Определяет, является ли значение свойством типа display:flex.
+is-display-flex($value)
+  return $value in (flex inline-flex)
+
+// Определяет, является ли значение расширенным значением flex-direction.
+is-flex-direction($value)
+  return $value in (row row-reverse column column-reverse)
+
+// Определяет, является ли значение расширенным значением flex-wrap.
+is-flex-wrap($value)
+  return $value in (nowrap wrap wrap-reverse)
+  
+// Определяет, является ли значение расширенным значением justify-content. 
+is-justify-content($value)
+  return $value in (flex-start flex-end center space-between space-around)
+  
+// Определяет, является ли значение расширенным значением align-items. 
+is-align-items($value)
+  return $value in (flex-start flex-end center baseline stretch)
+  
+// Определяет, является ли значение расширенным значением align-content. 
+is-align-content($value)
+  return $value in (flex-start flex-end center space-between space-around stretch)
+  
+// Определяет, является ли значение расширенным значением position.
+is-position-addon($value)
+  return $value in (top right bottom left center middle)
+
+// Определяет, является ли значение расширенным значением display.
+is-display-addon($value)
+  return $value is center
+  
+// Формирует из списка значений хэш, сгруппированный по карте "имя-свойства": "функция принадлежности".
+create-groups($values, $map)
+
+  $result = {
+    "unknown": ()
+  }
+
+  for $name, $func in $map
+    $result[$name] = ()
+    
+  $complexMap = {}
+  $complex = ()
+  
+  for $value in $values
+    
+    $isComplex = false
+    $isBasic = false
+    $basicName = null
+    $isKnown = false
+    
+    if $value is a "boolean" and $value is false
+      push($complex, $value)
+    else
+      
+      for $name, $func in $map
+        $isMatch = $func($value)
+        if $isMatch
+          $isKnown = true
+          if $isBasic
+            unless $isComplex
+              $complexMap[$basicName] = $map[$basicName]
+            $complexMap[$name] = $func
+            $isComplex = true
+            $basicName = null
+          else
+            $basicName = $name
+            $isBasic = true
+      
+      if $isComplex
+        $isBasic = false
+              
+      if !$isKnown
+        push($result["unknown"], $value)
+      else
+        if $isBasic
+          push($result[$basicName], $value)
+        else
+          push($complex, $value)
+   
+  $exclude = ()
+  
+  for $name, $func in $complexMap
+    $resultValue = $result[$name]
+    unless $resultValue
+      $isMatch = false
+      $length = length($complex)
+      for $i in (0...$length)
+        $value = $complex[$i]
+        unless $i in $exclude
+          unless $isMatch
+            $isMatch = $value is false ? true : $func($value)
+            if $isMatch
+              push($result[$name], $value)
+              push($exclude, $i)
+   
+  return $result
+
+// Генерирует данные для свойств border-*.
+generate-borders($values)
+  
+  $values = create-groups($values, {
+    "color": is-color
+    "style": is-border-style
+    "width": is-unit
+    "radius": is-unit
+  })
+   
+  $color = $values["color"][0]
+  $style = $values["style"][0]
+  $width = $values["width"][0]
+  $radius = $values["radius"][0]
+  
+  $radius = $width if $radius is null and $style is none and isset($width)
+  
+  $result = {
+    "radius": $radius
+    "border": null
+  }
+  
+  if $color or $style or $width
+    
+    $color = black unless isset($color)
+    $style = solid unless isset($style)
+    $width = 1px unless isset($width)
+    
+    if $style is none
+      $color = null
+      $width = null
+    
+    $result["border"] = s("%s %s %s", $width, $style, $color)
+    
+  return $result
