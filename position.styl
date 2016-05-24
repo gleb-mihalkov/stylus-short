@@ -24,15 +24,18 @@ position($values...)
     $bottom = $top if $bottom is null
     $left = $right if $left is null
     
-    position: $position if $position
-    bottom: $bottom if $bottom
-    right: $right if $right
-    left: $left if $left
-    top: $top if $top
+    position: $position if isset($position)
+    bottom: $bottom if isset($bottom)
+    right: $right if isset($right)
+    left: $left if isset($left)
+    top: $top if isset($top)
     
   else
     
     $position = absolute if $position is null
+    
+    $noLeft = false
+    $noTop = false
     
     if center in $addon and isset(@width)
       $noLeft = true
