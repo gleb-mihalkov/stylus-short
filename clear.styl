@@ -4,11 +4,11 @@ clear($value)
   
   if $value is fix
     
-    &:before, &:after
-      #{"clear"}: both
+    &:before
+    &:after
+      {"clear"}: both
       display: table
       content: ""
       
   else
-    
-    #{"clear"}: $value  
+    {"clear"}: $value  
