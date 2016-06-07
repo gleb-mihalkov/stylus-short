@@ -1,0 +1,14 @@
+// Переопределяет свойство clear.
+// clear: ... | fix
+clear($value)
+  
+  if $value is fix
+    
+    &:before, &:after
+      #{"clear"}: both
+      display: table
+      content: ""
+      
+  else
+    
+    #{"clear"}: $value  
