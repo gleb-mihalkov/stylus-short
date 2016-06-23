@@ -1,51 +1,59 @@
 // Переопределяет свойство background.
 // background: <bg-image> <bg-color> <bg-repeat> <bg-attachment> <bg-clip> <bg-origin> <bg-position> <bg-size>
 background($values...)
-  return if list-separator($values) is ","
+
+  if list-separator($values) is ","
+    {'background'}: $values
   
-  $values = create-groups($values, {
-    "image": is-call
-    "color": is-color
-    "repeat": is-background-repeat
-    "attachment": is-background-attachment
-    "clip": is-background-clip
-    "origin": is-background-origin
-    "position-x": is-background-position-x
-    "position-y": is-background-position-y
-    "size-x": is-background-size
-    "size-y": is-background-size
-  })
+  else
   
-  $image = $values["image"][0]
-  $color = $values["color"][0]
-  $repeat = $values["repeat"][0]
-  $attachment = $values["attachment"][0]
-  $clip = $values["clip"][0]
-  $origin = $values["origin"][0]
-  $position-x = $values["position-x"][0]
-  $position-y = $values["position-y"][0]
-  $size-x = $values["size-x"][0]
-  $size-y = $values["size-y"][0]
-  
-  background-attachment: $attachment if isset($attachment)
-  background-repeat: $repeat if isset($repeat)
-  background-origin: $origin if isset($origin)
-  background-image: $image if isset($image)
-  background-color: $color if isset($color)
-  background-clip: $clip if isset($clip)
-  
-  if $position-x or $position-y
-    $position-y = center if $position-y is null and $position-x is center
-    $position = s("%s %s", $position-x, $position-y)
-    background-position: $position
-  
-  if $size-x or $size-y
+    $values = create-groups($values, {
+      "image": is-call
+      "color": is-color
+      "repeat": is-background-repeat
+      "attachment": is-background-attachment
+      "clip": is-background-clip
+      "origin": is-background-origin
+      "position-x": is-background-position-x
+      "position-y": is-background-position-y
+      "size-x": is-background-size
+      "size-y": is-background-size
+    })
     
-    $size-y = $size-x if $size-y is null
+    $image = $values["image"][0]
+    $color = $values["color"][0]
+    $repeat = $values["repeat"][0]
+    $attachment = $values["attachment"][0]
+    $clip = $values["clip"][0]
+    $origin = $values["origin"][0]
+    $position-x = $values["position-x"][0]
+    $position-y = $values["position-y"][0]
+    $size-x = $values["size-x"][0]
+    $size-y = $values["size-y"][0]
     
-    if $size-x is a "unit" and $size-y is a "unit"
-      background-size: $size-x $size-y
-    else
-      $size-x = $size-y if $size-x is a "unit"
-      background-size: $size-x
+    $repeat = no-repeat if $repeat is null
+    
+    background-attachment: $attachment if isset($attachment)
+    background-repeat: $repeat if isset($repeat)
+    background-origin: $origin if isset($origin)
+    background-image: $image if isset($image)
+    background-color: $color if isset($color)
+    background-clip: $clip if isset($clip)
+     
+    if $position-x or $position-y
+      $position-y = center if $position-y is null and $position-x is center
+      $position-x = null unless isset($position-x)
+      $position-y = null unless isset($position-y)
+      $position = s("%s %s", $position-x, $position-y)
+      background-position: $position
+    
+    if $size-x or $size-y
+      
+      $size-y = $size-x if $size-y is null
+      
+      if $size-x is a "unit" and $size-y is a "unit"
+        background-size: $size-x $size-y
+      else
+        $size-x = $size-y if $size-x is a "unit"
+        background-size: $size-x
     
