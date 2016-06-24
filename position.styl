@@ -26,7 +26,7 @@ position($values...)
     $bottom = $top if $bottom is null
     $left = $right if $left is null
     
-    position: $position
+    {'position'}: $position
     bottom: $bottom if isset($bottom)
     right: $right if isset($right)
     left: $left if isset($left)
@@ -47,7 +47,7 @@ position($values...)
       margin-top: -(@height / 2)
       top: 50%
     
-    position: $position
+    {'position'}: $position
     bottom: 0px if bottom in $addon
     right: 0px if right in $addon
     left: 0px if left in $addon and !$noLeft

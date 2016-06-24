@@ -1,6 +1,3 @@
 // Переопределяет свойство margin.
-margin($top, $right = $top, $bottom = $top, $left = $right)
-  margin-bottom: $bottom if isset($bottom)
-  margin-right: $right if isset($right)
-  margin-left: $left if isset($left)
-  margin-top: $top if isset($top)
+margin($values...)
+  generate-offsets('margin', $values)

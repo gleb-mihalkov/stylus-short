@@ -1,5 +1,14 @@
 // Переопределяет свойство color.
 // color: <color> <background-color>
-color($color, $background-color = false)
+color($values...)
+  
+  $values = create-groups($values, {
+    'color': is-color,
+    'background-color': is-background-color
+  })
+  
+  $color = $values['color'][0]
+  $background-color = $values['background-color'][0]
+  
+  {'color'}: with-important($color, $values['important']) if isset($color)
   background-color: $background-color if isset($background-color)
-  color: $color if isset($color)

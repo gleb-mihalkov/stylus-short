@@ -1,5 +1,14 @@
 // Переопределяет свойство font-size.
 // font-size: <font-size> <line-height>
-font-size($font-size, $line-height = false)
+font-size($values...)
+  
+  $values = create-groups($values, {
+    'font-size': is-font-size,
+    'line-height': is-line-height
+  })
+  
+  $font-size = $values['font-size'][0]
+  $line-height = $values['line-height'][0]
+  
+  {'font-size'}: with-important($font-size, $values['important']) if isset($font-size)
   line-height: $line-height if isset($line-height)
-  font-size: $font-size if isset($font-size)

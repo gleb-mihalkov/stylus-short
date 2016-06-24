@@ -1,13 +1,13 @@
 // Переопределение свойства overflow.
 // overflow: ... | ellipsis
-overflow($value)
+overflow($value, $important = false)
   
   if $value is ellipsis
-    
+        
+    {'overflow'}: with-important(hidden, $important)
     text-overflow: ellipsis
     white-space: nowrap
-    overflow: hidden
   
   else
     
-    overflow: $value
+    {'overflow'}: with-important($value, $important)

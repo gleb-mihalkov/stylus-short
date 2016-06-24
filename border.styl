@@ -6,7 +6,7 @@ border($values...)
   $radius = $values["radius"]
   
   border-radius: $radius if isset($radius)
-  border: $border if isset($border)
+  {'border'}: $border if isset($border)
 
 // Переопределяет свойство border-top.
 border-top($values...)
@@ -15,7 +15,7 @@ border-top($values...)
   $radius = $values["radius"]
   
   border-radius: $radius $radius 0 0 if isset($radius)
-  border-top: $border if isset($border)
+  {'border-top'}: $border if isset($border)
   
 // Переопределяет свойство border-left.
 border-right($values...)
@@ -24,7 +24,7 @@ border-right($values...)
   $radius = $values["radius"]
   
   border-radius: 0 $radius $radius 0 if isset($radius)
-  border-right: $border if isset($border)
+  {'border-right'}: $border if isset($border)
   
 // Переопределяет свойство border-bottom.
 border-bottom($values...)
@@ -33,7 +33,7 @@ border-bottom($values...)
   $radius = $values["radius"]
   
   border-radius: 0 0 $radius $radius if isset($radius)
-  border-bottom: $border if isset($border)
+  {'border-bottom'}: $border if isset($border)
 
 // Переопределяет свойство border-left.
 border-left($values...)
@@ -42,5 +42,5 @@ border-left($values...)
   $radius = $values["radius"]
   
   border-radius: $radius 0 0 $radius if isset($radius)
-  border-left: $border if isset($border)
+  {'border-left'}: $border if isset($border)
     

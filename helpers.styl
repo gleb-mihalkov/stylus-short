@@ -38,6 +38,14 @@ is-font-weight($value)
 is-font-style($value)
   return $value in (normal italic oblique inherit)
 
+// Определяет, является ли значение свойством font-size.
+is-font-size($value) 
+  return $value is a 'unit' or $value in (xx-small x-small small medium large x-large xx-large larger smaller)
+
+// Определяет, является ли значение свойством line-height.
+is-line-height($value)
+  return $value is a 'unit' or $value in (normal)
+
 // Определяет, является ли значение свойством text-decoration.
 is-text-decoration($value)
   return $value in (blink line-through overline underline none inherit)
@@ -65,6 +73,10 @@ is-background-clip($value)
 // Определяет, является ли значение свойством background-origin.
 is-background-origin($value)
   return $value in (padding-box border-box content-box)
+
+// Определяет, является ли значение свойством background-image.
+is-background-image($value)
+  return $value is a 'call' or $value in (none)
   
 // Определяет, является ли значение свойством background-position-x.
 is-background-position-x($value)
@@ -118,6 +130,7 @@ is-display-addon($value)
 create-groups($values, $map)
 
   $result = {
+    "important": false
     "unknown": ()
   }
 
@@ -134,34 +147,38 @@ create-groups($values, $map)
     $basicName = null
     $isKnown = false
     
-    if $value is a "boolean" and $value is false
-      push($complex, $value)
+    if $value is '!important'
+      $result['important'] = true
     else
-      
-      for $name, $func in $map
-        $isMatch = $func($value)
-        if $isMatch
-          $isKnown = true
-          if $isBasic
-            unless $isComplex
-              $complexMap[$basicName] = $map[$basicName]
-            $complexMap[$name] = $func
-            $isComplex = true
-            $basicName = null
-          else
-            $basicName = $name
-            $isBasic = true
-      
-      if $isComplex
-        $isBasic = false
-              
-      if !$isKnown
-        push($result["unknown"], $value)
+    
+      if $value is a "boolean" and $value is false
+        push($complex, $value)
       else
-        if $isBasic
-          push($result[$basicName], $value)
+        
+        for $name, $func in $map
+          $isMatch = $func($value)
+          if $isMatch
+            $isKnown = true
+            if $isBasic
+              unless $isComplex
+                $complexMap[$basicName] = $map[$basicName]
+              $complexMap[$name] = $func
+              $isComplex = true
+              $basicName = null
+            else
+              $basicName = $name
+              $isBasic = true
+        
+        if $isComplex
+          $isBasic = false
+                
+        if !$isKnown
+          push($result["unknown"], $value)
         else
-          push($complex, $value)
+          if $isBasic
+            push($result[$basicName], $value)
+          else
+            push($complex, $value)
    
   $exclude = ()
   
@@ -180,6 +197,11 @@ create-groups($values, $map)
               push($exclude, $i)
    
   return $result
+
+// Возвращает значение, если нужно, дополненное директивой !important.
+with-important($value, $isImportant = false)
+  return s('%s !important', $value) if $isImportant
+  return $value
 
 // Генерирует данные для свойств border-*.
 generate-borders($values)
@@ -212,7 +234,36 @@ generate-borders($values)
     if $style is none
       $color = null
       $width = null
-    
-    $result["border"] = s("%s %s %s", $width, $style, $color)
+      
+    $border = s('%s %s %s', $width, $style, $color)
+    $border = with-important($border, $values['important'])
+    $result["border"] = $border
     
   return $result
+  
+generate-offsets($property, $list)
+  
+  $values = create-groups($list, {
+    'top': is-unit
+    'right': is-unit
+    'bottom': is-unit
+    'left': is-unit
+  })
+   
+  if $values['important']
+    {$property}: $list
+  else
+    
+    $top = $values['top'][0]
+    $right = $values['right'][0]
+    $bottom = $values['bottom'][0]
+    $left = $values['left'][0]
+    
+    $right = $top if $right is null
+    $bottom = $top if $bottom is null
+    $left = $right if $left is null
+    
+    {$property + '-top'}: $top if isset($top)
+    {$property + '-right'}: $right if isset($right)
+    {$property + '-bottom'}: $bottom if isset($bottom)
+    {$property + '-left'}: $left if isset($left)
