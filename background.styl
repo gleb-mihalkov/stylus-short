@@ -41,6 +41,8 @@ background($values...)
     background-clip: $clip if isset($clip)
      
     if $position-x or $position-y
+      $position-x = unquote($position-x) if isset($position-x)
+      $position-y = unquote($position-y) if isset($position-y)
       $position-y = center if $position-y is null and $position-x is center
       $position-x = null unless isset($position-x)
       $position-y = null unless isset($position-y)

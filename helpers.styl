@@ -80,11 +80,11 @@ is-background-image($value)
   
 // Определяет, является ли значение свойством background-position-x.
 is-background-position-x($value)
-  return $value is a "unit" or $value in (left center right)
+  return $value is a "unit" or $value is a 'string' or $value in (left center right)
 
 // Определяет, является ли значение свойством background-position-y.
 is-background-position-y($value)
-  return $value is a "unit" or $value in (top center bottom)
+  return $value is a "unit" or $value is a 'string' or $value in (top center bottom)
   
 // Определяет, является ли значение свойством background-size.
 is-background-size($value)
