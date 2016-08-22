@@ -4,8 +4,10 @@ font-weight($value, $important = false)
   $value = 100 if $value is thin
   $value = 200 if $value is extralight
   $value = 300 if $value is light
+  $value = 400 if $value is regular
   $value = 500 if $value is medium
   $value = 600 if $value is semibold
   $value = 800 if $value is extrabold
   $value = 900 if $value is heavy
+  $value = 900 if $value is black
   font-weight: with-important($value, $important) if isset($value)

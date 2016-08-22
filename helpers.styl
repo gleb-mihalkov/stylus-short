@@ -9,6 +9,10 @@ is-color($value)
 // Определяет, является ли значение размером.
 is-unit($value)
   return $value is a "unit"
+
+// Определяет, является ли значение размером с дополнительным значением auto.
+is-unit-auto($value)
+  return $value is a "unit" or $value is auto
   
 // Определяет, является ли значение строкой.
 is-string($value)
@@ -32,7 +36,7 @@ is-text-align($value)
 
 // Определяет, является ли значение свойством font-weight.
 is-font-weight($value)
-  return $value in (bold bolder lighter thin extralight light normal medium semibold extrabold heavy 100 200 300 400 500 600 700 800 900)
+  return $value in (bold bolder lighter thin extralight light normal regular medium semibold extrabold black heavy 100 200 300 400 500 600 700 800 900)
 
 // Определяет, является ли значение свойством font-style.
 is-font-style($value)
@@ -240,14 +244,15 @@ generate-borders($values)
     $result["border"] = $border
     
   return $result
-  
+
+// Генерирует набор стилей для отступов (margin, padding) с clockwise синтаксисом.
 generate-offsets($property, $list)
   
   $values = create-groups($list, {
-    'top': is-unit
-    'right': is-unit
-    'bottom': is-unit
-    'left': is-unit
+    'top': is-unit-auto
+    'right': is-unit-auto
+    'bottom': is-unit-auto
+    'left': is-unit-auto
   })
    
   if $values['important']
