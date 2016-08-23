@@ -7,6 +7,7 @@ display($values...)
     "content": is-string
     "width": is-unit-auto
     "height": is-unit-auto
+    "vertical-align": is-vertical-align
     "addon": is-display-addon
   })
   
@@ -14,14 +15,16 @@ display($values...)
   $content = $values["content"][0]
   $width = $values["width"][0]
   $height = $values["height"][0]
+  $vertical-align = $values["vertical-align"][0]
   $addon = $values["addon"][0]
   
   $height = $width if $height is null
   
-  {'display'}: $display if isset($display)
+  {'display'}: with-important($display, $values['important']) if isset($display)
   content: $content if isset($content)
   height: $height if isset($height)
   width: $width if isset($width)
+  vertical-align: $vertical-align if isset($vertical-align)
   
   if isset($addon)
     margin-right: auto

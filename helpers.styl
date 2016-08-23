@@ -129,6 +129,10 @@ is-position-addon($value)
 // Определяет, является ли значение расширенным значением display.
 is-display-addon($value)
   return $value is center
+
+// Определяет, является ли значение значением свойства vertical-align.
+is-vertical-align($value)
+  return $value is a "unit" or $value in (baseline bottom middle sub super text-bottom text-top top inherit)
   
 // Формирует из списка значений хэш, сгруппированный по карте "имя-свойства": "функция принадлежности".
 create-groups($values, $map)
